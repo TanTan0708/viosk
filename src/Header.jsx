@@ -4,12 +4,12 @@ function Header(){
             <div className="headercontainer">
                 <div className="header">
                     <div className="leftheader">
-                        <img src="src/assets/vi.png" alt="" />
+                        <img src="/vi.png" alt="" />
                     </div>
                     
                     <div className="rightheader">
-                        <img src="src/assets/Doorbell.png" alt="" />
-                        <img src="src/assets/ShoppingCart.png" alt="" />
+                        <img src="/Doorbell.png" alt="" />
+                        <img src="/ShoppingCart.png" alt="" />
                     </div>
                 </div>
             </div>

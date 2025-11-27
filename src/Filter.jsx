@@ -9,7 +9,7 @@ function Filter(){
                     <div className="filter">
                         <div className="filterpamore">
                             <p>Filter</p>
-                            <img src="src/assets/Funnel.png" alt="" />
+                            <img src="/Funnel.png" alt="" />
                         </div>
                     </div>
                 </div>
