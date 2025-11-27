@@ -7,7 +7,9 @@ function App() {
 
   return (
     <>
+      
       <Header></Header>
+      
       <Search></Search>
       <Filter></Filter>
       <div className="supercardcontainer">

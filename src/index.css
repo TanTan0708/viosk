@@ -25,8 +25,20 @@ a:hover {
 body {
   margin: 0;
   display: flex;
+  width: 100%;
+  padding: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+html {
+  width: 100%;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+* {
+  box-sizing: border-box;
 }
 
 h1 {
@@ -79,39 +91,46 @@ button:focus-visible {
   src: url('/SF-Pro-Rounded-Light.otf');
 }
 
-.headercontainer{
+.headercontainer {
   display: flex;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 2;
+  width: 100%;
+  padding: 0 5%; /* Move padding to container */
+  box-sizing: border-box;
 }
-.header{
+
+.header {
   display: flex;
-  margin-left: 5%;
   margin-top: 5%;
   padding: 5%;
-  width: 80vw;
+  width: 100%; /* Full width of container */
   align-items: center;
   background-color: white;
   box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.3);
   border-radius: 24px;
 }
-.leftheader{
+
+.leftheader {
   display: flex;
   flex-wrap: wrap;
 }
-.leftheader img{
+
+.leftheader img {
   width: 50px;
   height: 50px;
 }
-.rightheader{
+
+.rightheader {
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
   width: 100%;
 }
-.rightheader img{
+
+.rightheader img {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -119,26 +138,33 @@ button:focus-visible {
   height: 40px;
   margin-left: 5%;
 }
-.searchcontainer{
+
+.searchcontainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   margin-top: 5%;
-  margin-left: 5%;
   z-index: 1;
+  width: 100%;
+  padding: 0 5%;
+  box-sizing: border-box;
 }
-.searchbox{
+
+.searchbox {
   display: flex;
   align-items: center;
   background-color: #F3F3F3;
   border-radius: 32px;
-  width: 85vw;
+  width: 100%; /* Full width of container */
   height: 12vw;
+  min-height: 50px; /* Ensure minimum height */
   border: 1px solid rgba(0, 0, 0, 0.07);
   padding-left: 5%;
+  box-sizing: border-box;
 }
-.searchbox input{
+
+.searchbox input {
   background-color: transparent;
   border-color: transparent;
   outline: none;
@@ -146,74 +172,93 @@ button:focus-visible {
   font-family: 'SFsemibold';
   font-size: 120%;
   margin-left: 2%;
+  width: 100%;
+  /* Prevent zoom on iOS */
+  font-size: max(16px, 120%);
 }
-.filtercontainer{
+
+.filtercontainer {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
-.filterunder{
+
+.filterunder {
   display: flex;
   align-items: center;
-  width: 85vw;
-  margin-left: 5%;
+  width: 90%;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
-.item{
+
+.item {
   font-family: 'SFbold';
   font-size: 150%;
+  margin-left: 5%;
 }
-.filter{
+
+.filter {
   display: flex;
   color: #666666;
   justify-content: flex-end;
   align-items: center;
   width: 100%;
 }
-.filterpamore{
+
+.filterpamore {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   background-color: #F3F3F3;
-  padding-left: 8%;
+  margin-right: 5%;
+  padding-left: 25%;
   padding-right: 5%;
   font-family: 'SFsemibold';
   width: 50px;
   height: 30px;
   font-size: 100%;
-  /*
-  padding-left: 5%;
-  padding-right: 5%;
-  padding-top: -20%;
-  padding-bottom: -50%;*/
   border-radius: 32px;
   border: 1px solid rgba(0, 0, 0, 0.07);
+  box-sizing: border-box;
 }
-.filter img{
+
+.filter img {
   width: 20px;
   height: 20px;
 }
-.supercardcontainer{
+
+.supercardcontainer {
   display: flex;
   flex-wrap: wrap;
   margin-top: -8%;
+  width: 100%;
+  box-sizing: border-box;
 }
-.cardcontainer{
+
+.cardcontainer {
   display: flex;
   align-items: center;
   flex-direction: column;
   background-color: #D9D9D9;
   border: 1px solid rgba(0, 0, 0, 0.25);
   border-radius: 16px;
-  width: 40vw;
+  width: calc(50% - 7%); /* Responsive width */
+  max-width: 40vw;
   margin-left: 7%;
   margin-top: 5%;
+  box-sizing: border-box;
 }
-.price{
+
+.price {
   display: flex;
   flex-direction: row;
-  width: 35vw;
+  width: 90%; /* Changed from fixed vw */
+  box-sizing: border-box;
 }
-.leftprice{
+
+.leftprice {
   margin-top: -5%;
   margin-left: 5%;
   display: flex;
@@ -223,31 +268,37 @@ button:focus-visible {
   font-family: 'SFlight';
   font-size: 70%;
 }
-.rightprice{
+
+.rightprice {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   width: 100%;
 }
-.rightprice img{
+
+.rightprice img {
   width: 20px;
   height: 2.5vh;
 }
-.name{
+
+.name {
   font-family: 'SFsemibold';
   font-size: 70%;
   margin-top: -5%;
 }
-.tagscontainer{
+
+.tagscontainer {
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: 'SFsemibold';
   font-size: 50%;
-  width: 20vw;
+  width: 90%; /* Changed from fixed vw */
   margin-top: -5%;
+  box-sizing: border-box;
 }
-.tags{
+
+.tags {
   background-color: #E5E5E5;
   border-radius: 16px;
   width: 100%;
@@ -260,15 +311,20 @@ button:focus-visible {
   margin-left: 2.5%;
   margin-right: 2.5%;
   border: 1px solid rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
 }
-.addtocartcontainer{
+
+.addtocartcontainer {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
-.addtocart{
+
+.addtocart {
   display: flex;
-  width: 25vw;
+  width: 70%; /* Changed from fixed vw */
+  max-width: 25vw;
   justify-content: center;
   align-items: center;
   font-family: 'SFsemibold';
@@ -277,14 +333,17 @@ button:focus-visible {
   height: 30px;
   margin-bottom: 10%;
   background-color: #E5E5E5;
+  box-sizing: border-box;
 }
-.leftcart{
+
+.leftcart {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   margin-right: 10%;
 }
-.leftcart img{
+
+.leftcart img {
   width: 17px;
   height: 17px;
 }
