@@ -1,0 +1,290 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+@font-face {
+  font-family: 'SFsemibold';
+  src: url('/SF-Pro-Rounded-Semibold.otf');
+}
+@font-face {
+  font-family: 'SFbold';
+  src: url('/SF-Pro-Rounded-Bold.otf');
+}
+@font-face {
+  font-family: 'SFlight';
+  src: url('/SF-Pro-Rounded-Light.otf');
+}
+
+.headercontainer{
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.header{
+  display: flex;
+  margin-left: 5%;
+  margin-top: 5%;
+  padding: 5%;
+  width: 80vw;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.3);
+  border-radius: 24px;
+}
+.leftheader{
+  display: flex;
+  flex-wrap: wrap;
+}
+.leftheader img{
+  width: 50px;
+  height: 50px;
+}
+.rightheader{
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.rightheader img{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  margin-left: 5%;
+}
+.searchcontainer{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%;
+  margin-left: 5%;
+  z-index: 1;
+}
+.searchbox{
+  display: flex;
+  align-items: center;
+  background-color: #F3F3F3;
+  border-radius: 32px;
+  width: 85vw;
+  height: 12vw;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  padding-left: 5%;
+}
+.searchbox input{
+  background-color: transparent;
+  border-color: transparent;
+  outline: none;
+  color: black;
+  font-family: 'SFsemibold';
+  font-size: 120%;
+  margin-left: 2%;
+}
+.filtercontainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.filterunder{
+  display: flex;
+  align-items: center;
+  width: 85vw;
+  margin-left: 5%;
+}
+.item{
+  font-family: 'SFbold';
+  font-size: 150%;
+}
+.filter{
+  display: flex;
+  color: #666666;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+.filterpamore{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: #F3F3F3;
+  padding-left: 8%;
+  padding-right: 5%;
+  font-family: 'SFsemibold';
+  width: 50px;
+  height: 30px;
+  font-size: 100%;
+  /*
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: -20%;
+  padding-bottom: -50%;*/
+  border-radius: 32px;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+}
+.filter img{
+  width: 20px;
+  height: 20px;
+}
+.supercardcontainer{
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: -8%;
+}
+.cardcontainer{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #D9D9D9;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  width: 40vw;
+  margin-left: 7%;
+  margin-top: 5%;
+}
+.price{
+  display: flex;
+  flex-direction: row;
+  width: 35vw;
+}
+.leftprice{
+  margin-top: -5%;
+  margin-left: 5%;
+  display: flex;
+  white-space: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  font-family: 'SFlight';
+  font-size: 70%;
+}
+.rightprice{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+.rightprice img{
+  width: 20px;
+  height: 2.5vh;
+}
+.name{
+  font-family: 'SFsemibold';
+  font-size: 70%;
+  margin-top: -5%;
+}
+.tagscontainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'SFsemibold';
+  font-size: 50%;
+  width: 20vw;
+  margin-top: -5%;
+}
+.tags{
+  background-color: #E5E5E5;
+  border-radius: 16px;
+  width: 100%;
+  white-space: nowrap;
+  padding: 0px 2vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+.addtocartcontainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.addtocart{
+  display: flex;
+  width: 25vw;
+  justify-content: center;
+  align-items: center;
+  font-family: 'SFsemibold';
+  font-size: 70%;
+  border-radius: 8px;
+  height: 30px;
+  margin-bottom: 10%;
+  background-color: #E5E5E5;
+}
+.leftcart{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-right: 10%;
+}
+.leftcart img{
+  width: 17px;
+  height: 17px;
+}
