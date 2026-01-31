@@ -26,7 +26,6 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
   width: 100%;
@@ -60,7 +59,19 @@ button:focus-visible {
   width: 100%;
 }
 
-@media (prefers-color-scheme: light) {
+
+.headerbox{
+  width: 100%;
+  height: 300px;
+  background-color: #142646;
+  display: flex;
+  align-items: center;
+  margin-top: -40%;
+  border-radius: 8%;
+}
+
+
+@media (prefers-color-scheme: dark) {
   :root {
     color: #213547;
     background-color: #ffffff;
