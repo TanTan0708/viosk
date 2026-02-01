@@ -1,30 +1,32 @@
 function Header() {
     return (
-        <>
-            <div className="header">
-                <div className="headerbox">
-                    <div className="logoandshoppingcart">
-                        <div className="logo">
-
-                        </div>
-                        <div className="shoppingcart">
-
+        <header className="header">
+            <div className="header-content">
+                <div className="header-top">
+                    <div className="logo">
+                        <div className="logo-outer">
+                            <div className="logo-inner"></div>
                         </div>
                     </div>
-                    <div className="welcometext">
-
-                    </div>
-                    <div className="searchbar">
-                        <div className="searchicon">
-
-                        </div>
-                        <div className="searchtextbox">
-                            
-                        </div>
-                    </div>
+                    <button className="shopping-cart-btn">
+                        <span className="material-symbols-outlined">shopping_bag</span>
+                    </button>
+                </div>
+                
+                <h1 className="welcome-text">
+                    Welcome to, Gensan Automotive Parts
+                </h1>
+                
+                <div className="search-container">
+                    <span className="material-symbols-outlined search-icon">search</span>
+                    <input 
+                        className="search-input" 
+                        placeholder="Searching for something?" 
+                        type="text"
+                    />
                 </div>
             </div>
-        </>
+        </header>
     );
 }
 
