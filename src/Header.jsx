@@ -2,11 +2,10 @@ function Header() {
     return (
         <header className="header">
             <div className="header-content">
+                <img src="/vite.svg" alt="Background logo" className="header-bg-logo" />
                 <div className="header-top">
                     <div className="logo">
-                        <div className="logo-outer">
-                            <div className="logo-inner"></div>
-                        </div>
+                        <img src="/vite.svg" alt="Vite logo" className="logo-img" />
                     </div>
                     <button className="shopping-cart-btn">
                         <span className="material-symbols-outlined">shopping_bag</span>
