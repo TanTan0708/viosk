@@ -19,18 +19,41 @@ function ProductModal({ product, onClose }) {
                     <p className="modal-price">P {product.price}</p>
                 </div>
 
-                <div className="modal-tags">
-                    <ul>
-                        <li>16 inches</li>
-                        <li>for motor cycle</li>
-                        <li>phone linging</li>
-                        <li>rice bowl</li>
-                    </ul>
-                </div>
+                {product.tags && product.tags.length > 0 && (
+                    <div className="modal-tags">
+                        <ul>
+                            {product.tags.map((tag, index) => (
+                                <li key={index}>{tag}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
 
                 <div className="modal-images">
-                    <div className="modal-image-placeholder"></div>
-                    <div className="modal-image-placeholder"></div>
+                    {product.extraPicture1 && (
+                        <div className="modal-image-container">
+                            <img 
+                                src={product.extraPicture1} 
+                                alt={`${product.name} - Image 1`}
+                                className="modal-image"
+                            />
+                        </div>
+                    )}
+                    {product.extraPicture2 && (
+                        <div className="modal-image-container">
+                            <img 
+                                src={product.extraPicture2} 
+                                alt={`${product.name} - Image 2`}
+                                className="modal-image"
+                            />
+                        </div>
+                    )}
+                    {!product.extraPicture1 && !product.extraPicture2 && (
+                        <>
+                            <div className="modal-image-placeholder"></div>
+                            <div className="modal-image-placeholder"></div>
+                        </>
+                    )}
                 </div>
             </div>
         </div>
