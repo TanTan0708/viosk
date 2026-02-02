@@ -1,6 +1,10 @@
+import { useState } from "react";
 import Header from "./Header";
+import ProductModal from "./ProductModal";
 
 function App() {
+    const [selectedProduct, setSelectedProduct] = useState(null);
+
     const products = [
         { id: 1, name: "Suzuki Motor Wheels", price: "5,000.00" },
         { id: 2, name: "Honda Car Wheels", price: "20,000.00" },
@@ -9,6 +13,20 @@ function App() {
         { id: 5, name: "Prime Wheels", price: "12,500.00" },
         { id: 6, name: "Reaver Wheels", price: "15,200.00" }
     ];
+
+    const handleCardClick = (product) => {
+        setSelectedProduct(product);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedProduct(null);
+    };
+
+    const handleAddClick = (e, product) => {
+        e.stopPropagation();
+        console.log("Add clicked for:", product.name);
+        // Your add to cart logic here
+    };
 
     return (
         <>
@@ -27,10 +45,17 @@ function App() {
                 
                 <div className="product-grid">
                     {products.map(product => (
-                        <div key={product.id} className="product-card">
+                        <div 
+                            key={product.id} 
+                            className="product-card"
+                            onClick={() => handleCardClick(product)}
+                        >
                             <div className="product-image">
                                 <span className="material-symbols-outlined info-icon">info</span>
-                                <button className="add-btn">
+                                <button 
+                                    className="add-btn"
+                                    onClick={(e) => handleAddClick(e, product)}
+                                >
                                     <span className="material-symbols-outlined">add</span>
                                 </button>
                             </div>
@@ -42,6 +67,11 @@ function App() {
                     ))}
                 </div>
             </main>
+            
+            <ProductModal 
+                product={selectedProduct} 
+                onClose={handleCloseModal}
+            />
         </>
     );
 }
