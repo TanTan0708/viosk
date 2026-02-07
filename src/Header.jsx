@@ -1,4 +1,4 @@
-function Header() {
+function Header({ siteTitle }) {
     return (
         <header className="header">
             <div className="header-content">
@@ -13,7 +13,7 @@ function Header() {
                 </div>
                 
                 <h1 className="welcome-text">
-                    Welcome to, Gensan Automotive Parts
+                    Welcome to, {siteTitle}
                 </h1>
                 
                 <div className="search-container">

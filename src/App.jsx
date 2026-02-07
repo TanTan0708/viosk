@@ -13,7 +13,7 @@ function App() {
     const SHEET_ID = import.meta.env.VITE_GOOGLE_SHEET_ID;
     const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
     const SHEET_NAME = import.meta.env.VITE_SHEET_NAME || 'Sheet1';
-    const RANGE = 'A2:F';
+    const RANGE = 'A2:G';
 
     useEffect(() => {
         fetchProductsFromSheet();
@@ -68,7 +68,8 @@ function App() {
                 tags: row[2] ? row[2].split(',').map(tag => tag.trim()).filter(tag => tag) : [],
                 price: row[3] || '0.00',
                 extraPicture1: row[4] || '',
-                extraPicture2: row[5] || ''
+                extraPicture2: row[5] || '',
+                title: row[6] || ''
             }));
             
             setProducts(productsData);
@@ -132,7 +133,7 @@ function App() {
 
     return (
         <>
-            <Header />
+            <Header siteTitle={products[0]?.title || "Default Title"} />
             <main className="main-content">
                 <div className="section-header">
                     <div className="section-title">
