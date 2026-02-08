@@ -681,7 +681,7 @@ body {
 .cart-item {
   display: flex;
   gap: 0.75rem;
-  padding: 0.75rem;
+  padding: 0.8rem;
   background-color: var(--slate-100);
   border-radius: 12px;
   margin-bottom: 0.75rem;
@@ -744,6 +744,7 @@ body {
   width: 28px;
   height: 28px;
   background-color: white;
+  margin-top: 1.5rem; /*addition*/
   border: 1px solid var(--slate-200);
   border-radius: 6px;
   display: flex;
@@ -777,12 +778,13 @@ body {
   font-weight: 600;
   min-width: 20px;
   text-align: center;
+  margin-top: 1.5rem; /*addition*/
 }
 
 .cart-remove-btn {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 0.5rem; /*addition*/
+  right: 0.75rem;
   width: 24px;
   height: 24px;
   background-color: white;
