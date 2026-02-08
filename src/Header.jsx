@@ -1,10 +1,11 @@
-function Header({ siteTitle }) {
+function Header({ siteTitle, onCartClick, cartCount }) {
     return (
         <header className="header">
             <div className="header-content">
                 <img src="/vite.svg" alt="Background logo" className="header-bg-logo" />
-                <button className="shopping-cart-btn">
+                <button className="shopping-cart-btn" onClick={onCartClick}>
                     <span className="material-symbols-outlined">shopping_bag</span>
+                    {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
                 </button>
                 <div className="header-top">
                     <div className="logo">
