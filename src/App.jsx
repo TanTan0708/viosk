@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Header from "./Header";
 import ProductModal from "./ProductModal";
-import ShoppingCart from "./Shoppingcart";
+import ShoppingCart from "./ShoppingCart";
 
 function App() {
     const [products, setProducts] = useState([]);
