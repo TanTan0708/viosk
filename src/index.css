@@ -781,6 +781,31 @@ body {
   margin-top: 1.5rem; /*addition*/
 }
 
+.cart-item-quantity-input {
+  color: var(--navy-custom);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  width: 40px;
+  height: 28px;
+  text-align: center;
+  margin-top: 1.5rem;
+  border: 1px solid var(--slate-200);
+  border-radius: 6px;
+  background-color: white;
+  transition: all 0.2s;
+}
+
+.cart-item-quantity-input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 0;
+  border-color: var(--primary);
+}
+
+.cart-item-quantity-input:hover {
+  border-color: var(--slate-400);
+}
+
 .cart-remove-btn {
   position: absolute;
   top: 0.5rem; /*addition*/

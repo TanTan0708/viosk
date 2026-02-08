@@ -7,6 +7,33 @@ function ShoppingCart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveIt
         }
     };
 
+    const handleQuantityInput = (itemId, value) => {
+        // Remove non-numeric characters
+        const numericValue = value.replace(/[^0-9]/g, '');
+        
+        if (numericValue === '') {
+            // If empty, keep it as is (will show empty input)
+            return;
+        }
+        
+        const quantity = parseInt(numericValue, 10);
+        
+        // Only update if it's a valid positive number
+        if (quantity > 0 && quantity <= 999) {
+            onUpdateQuantity(itemId, quantity);
+        } else if (quantity === 0) {
+            // If 0, remove the item
+            onRemoveItem(itemId);
+        }
+    };
+
+    const handleQuantityBlur = (itemId, currentQuantity) => {
+        // If the input is empty on blur, reset to 1
+        if (!currentQuantity || currentQuantity === 0) {
+            onUpdateQuantity(itemId, 1);
+        }
+    };
+
     const calculateTotal = () => {
         return cartItems.reduce((total, item) => {
             const price = parseFloat(item.price) || 0;
@@ -62,7 +89,15 @@ function ShoppingCart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveIt
                                         >
                                             <span className="material-symbols-outlined">remove</span>
                                         </button>
-                                        <span className="cart-item-quantity">{item.quantity}</span>
+                                        <input
+                                            type="text"
+                                            inputMode="numeric"
+                                            className="cart-item-quantity-input"
+                                            value={item.quantity}
+                                            onChange={(e) => handleQuantityInput(item.id, e.target.value)}
+                                            onBlur={() => handleQuantityBlur(item.id, item.quantity)}
+                                            onClick={(e) => e.target.select()}
+                                        />
                                         <button 
                                             className="cart-control-btn"
                                             onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
