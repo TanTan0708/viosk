@@ -1,4 +1,4 @@
-function ShoppingCart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem }) {
+function ShoppingCart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem, onCheckout }) {
     if (!isOpen) return null;
 
     const handleOverlayClick = (e) => {
@@ -121,7 +121,7 @@ function ShoppingCart({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveIt
                                 <span className="cart-total-label">Total:</span>
                                 <span className="cart-total-amount">P {calculateTotal()}</span>
                             </div>
-                            <button className="checkout-btn">
+                            <button className="checkout-btn" onClick={onCheckout}>
                                 Checkout
                             </button>
                         </div>

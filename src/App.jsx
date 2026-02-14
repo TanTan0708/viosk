@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "./Header";
 import ProductModal from "./ProductModal";
 import ShoppingCart from "./ShoppingCart";
+import CheckoutModal from "./CheckoutModal";
 
 function App() {
     const [products, setProducts] = useState([]);
@@ -10,6 +11,7 @@ function App() {
     const [error, setError] = useState(null);
     const [cartItems, setCartItems] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
     // Google Sheets Configuration
     // These values come from environment variables
@@ -17,6 +19,10 @@ function App() {
     const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
     const SHEET_NAME = import.meta.env.VITE_SHEET_NAME || 'Sheet1';
     const RANGE = 'A2:G';
+    
+    // Business Password Configuration
+    // Set this in your .env file as VITE_BUSINESS_PASSWORD
+    const BUSINESS_PASSWORD = import.meta.env.VITE_BUSINESS_PASSWORD || 'default123';
 
     useEffect(() => {
         fetchProductsFromSheet();
@@ -131,6 +137,92 @@ function App() {
         setIsCartOpen(!isCartOpen);
     };
 
+    const handleCheckout = () => {
+        if (cartItems.length > 0) {
+            setIsCheckoutOpen(true);
+        }
+    };
+
+    const handleConfirmPayment = async (password) => {
+        // Verify password
+        if (password !== BUSINESS_PASSWORD) {
+            return { success: false, error: 'Invalid password' };
+        }
+
+        try {
+            // Generate order data
+            const orderId = `ORD-${Date.now()}`;
+            const now = new Date();
+            const date = now.toLocaleDateString('en-US');
+            const time = now.toLocaleTimeString('en-US', { hour12: false });
+            
+            // Format order items
+            const orderItems = cartItems.map(item => 
+                `${item.name} (x${item.quantity})`
+            ).join(', ');
+            
+            const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+            const subtotal = cartItems.reduce((total, item) => {
+                const price = parseFloat(item.price) || 0;
+                return total + (price * item.quantity);
+            }, 0);
+            const totalAmount = subtotal; // You can add tax or fees here if needed
+            
+            // Prepare order data
+            const orderData = {
+                orderId: orderId,
+                date: date,
+                time: time,
+                order: orderItems,
+                totalQuantity: totalQuantity,
+                subtotal: subtotal.toFixed(2),
+                totalAmount: totalAmount.toFixed(2),
+                paymentMethod: 'Cash',      // You can make this dynamic
+                paymentStatus: 'Paid',
+                customerType: 'Walk-in'     // You can make this dynamic
+            };
+
+            // Get the Google Apps Script Web App URL from environment variable
+            const SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
+            
+            if (!SCRIPT_URL) {
+                console.error('VITE_GOOGLE_SCRIPT_URL not configured');
+                throw new Error('Sheet integration not configured. Please contact support.');
+            }
+
+            // Send order data to Google Apps Script
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain',
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            const result = await response.json();
+
+            if (!result.success) {
+                console.error('Failed to save order:', result.error);
+                throw new Error(result.error || 'Failed to save order to sheet');
+            }
+
+            console.log('Order saved successfully:', orderId);
+            
+            // Clear cart and close modals
+            setCartItems([]);
+            setIsCheckoutOpen(false);
+            setIsCartOpen(false);
+            
+            // Show success message (you can replace this with a proper notification)
+            alert(`Order confirmed! Order ID: ${orderId}`);
+            
+            return { success: true };
+        } catch (err) {
+            console.error('Error processing payment:', err);
+            return { success: false, error: err.message || 'Failed to process payment. Please try again.' };
+        }
+    };
+
     if (loading) {
         return (
             <>
@@ -231,6 +323,14 @@ function App() {
                 cartItems={cartItems}
                 onUpdateQuantity={handleUpdateQuantity}
                 onRemoveItem={handleRemoveItem}
+                onCheckout={handleCheckout}
+            />
+
+            <CheckoutModal 
+                isOpen={isCheckoutOpen}
+                onClose={() => setIsCheckoutOpen(false)}
+                cartItems={cartItems}
+                onConfirmPayment={handleConfirmPayment}
             />
         </>
     );
