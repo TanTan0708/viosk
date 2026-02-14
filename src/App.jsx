@@ -17,7 +17,7 @@ function App() {
     // These values come from environment variables
     const SHEET_ID = import.meta.env.VITE_GOOGLE_SHEET_ID;
     const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
-    const SHEET_NAME = import.meta.env.VITE_SHEET_NAME || 'Sheet1';
+    const SHEET_NAME = import.meta.env.VITE_SHEET_NAME || 'Sheet2';
     const RANGE = 'A2:G';
     
     // Business Password Configuration
