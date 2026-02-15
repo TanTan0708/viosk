@@ -3,6 +3,7 @@ import Header from "./Header";
 import ProductModal from "./ProductModal";
 import ShoppingCart from "./ShoppingCart";
 import CheckoutModal from "./CheckoutModal";
+import FilterModal from "./FilterModal";
 
 function App() {
     const [products, setProducts] = useState([]);
@@ -12,6 +13,13 @@ function App() {
     const [cartItems, setCartItems] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [filters, setFilters] = useState({
+        priceMin: null,
+        priceMax: null,
+        tags: []
+    });
 
     // Google Sheets Configuration
     // These values come from environment variables
@@ -19,7 +27,7 @@ function App() {
     const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
     const SHEET_NAME = import.meta.env.VITE_SHEET_NAME || 'Sheet2';
     const RANGE = 'A2:G';
-    
+
     // Business Password Configuration
     // Set this in your .env file as VITE_BUSINESS_PASSWORD
     const BUSINESS_PASSWORD = import.meta.env.VITE_BUSINESS_PASSWORD || 'default123';
@@ -37,19 +45,19 @@ function App() {
 
             // Build the API URL
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!${RANGE}?key=${API_KEY}`;
-            
+
             console.log('Fetching products from Google Sheets...');
             console.log('Sheet ID:', SHEET_ID ? 'Set ✓' : 'NOT SET ✗');
             console.log('API Key:', API_KEY ? 'Set ✓' : 'NOT SET ✗');
             console.log('Sheet Name:', SHEET_NAME);
-            
+
             const response = await fetch(url);
-            
+
             console.log('Response status:', response.status);
-            
+
             // Try to get the response text to see the actual error
             const responseText = await response.text();
-            
+
             if (!response.ok) {
                 // Try to parse as JSON to get the error message
                 try {
@@ -60,15 +68,15 @@ function App() {
                     throw new Error(`Failed to fetch data (Status: ${response.status}). Check console for details.`);
                 }
             }
-            
+
             const data = JSON.parse(responseText);
             console.log('Successfully fetched', data.values?.length || 0, 'products');
-            
+
             // Check if we have values
             if (!data.values || data.values.length === 0) {
                 throw new Error('No data found in the sheet. Make sure you have products starting from row 2.');
             }
-            
+
             // Transform sheet data into product objects
             const productsData = data.values.map((row, index) => ({
                 id: index + 1,
@@ -80,7 +88,7 @@ function App() {
                 extraPicture2: row[5] || '',
                 title: row[6] || ''
             }));
-            
+
             setProducts(productsData);
             setLoading(false);
         } catch (err) {
@@ -88,6 +96,44 @@ function App() {
             setError(err.message);
             setLoading(false);
         }
+    };
+
+    // Get all unique tags from products
+    const getAllTags = () => {
+        const tagsSet = new Set();
+        products.forEach(product => {
+            product.tags.forEach(tag => tagsSet.add(tag));
+        });
+        return Array.from(tagsSet).sort();
+    };
+
+    // Filter products based on search query and filters
+    const getFilteredProducts = () => {
+        return products.filter(product => {
+            // Search filter
+            const matchesSearch = searchQuery === '' ||
+                product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                product.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+
+            // Price filter
+            const productPrice = parseFloat(product.price) || 0;
+            const matchesPriceMin = filters.priceMin === null || productPrice >= filters.priceMin;
+            const matchesPriceMax = filters.priceMax === null || productPrice <= filters.priceMax;
+
+            // Tags filter
+            const matchesTags = filters.tags.length === 0 ||
+                filters.tags.some(filterTag => product.tags.includes(filterTag));
+
+            return matchesSearch && matchesPriceMin && matchesPriceMax && matchesTags;
+        });
+    };
+
+    const handleApplyFilters = (newFilters) => {
+        setFilters(newFilters);
+    };
+
+    const handleSearchChange = (query) => {
+        setSearchQuery(query);
     };
 
     const handleCardClick = (product) => {
@@ -100,10 +146,10 @@ function App() {
 
     const handleAddClick = (e, product) => {
         e.stopPropagation();
-        
+
         // Check if product is already in cart
         const existingItem = cartItems.find(item => item.id === product.id);
-        
+
         if (existingItem) {
             // Increase quantity
             setCartItems(cartItems.map(item =>
@@ -155,19 +201,19 @@ function App() {
             const now = new Date();
             const date = now.toLocaleDateString('en-US');
             const time = now.toLocaleTimeString('en-US', { hour12: false });
-            
+
             // Format order items
-            const orderItems = cartItems.map(item => 
+            const orderItems = cartItems.map(item =>
                 `${item.name} (x${item.quantity})`
             ).join(', ');
-            
+
             const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
             const subtotal = cartItems.reduce((total, item) => {
                 const price = parseFloat(item.price) || 0;
                 return total + (price * item.quantity);
             }, 0);
             const totalAmount = subtotal; // You can add tax or fees here if needed
-            
+
             // Prepare order data
             const orderData = {
                 orderId: orderId,
@@ -184,7 +230,7 @@ function App() {
 
             // Get the Google Apps Script Web App URL from environment variable
             const SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
-            
+
             if (!SCRIPT_URL) {
                 console.error('VITE_GOOGLE_SCRIPT_URL not configured');
                 throw new Error('Sheet integration not configured. Please contact support.');
@@ -207,15 +253,15 @@ function App() {
             }
 
             console.log('Order saved successfully:', orderId);
-            
+
             // Clear cart and close modals
             setCartItems([]);
             setIsCheckoutOpen(false);
             setIsCartOpen(false);
-            
+
             // Show success message (you can replace this with a proper notification)
             alert(`Order confirmed! Order ID: ${orderId}`);
-            
+
             return { success: true };
         } catch (err) {
             console.error('Error processing payment:', err);
@@ -261,10 +307,12 @@ function App() {
 
     return (
         <>
-            <Header 
-                siteTitle={products[0]?.title || "Default Title"} 
+            <Header
+                siteTitle={products[0]?.title || "Default Title"}
                 onCartClick={handleToggleCart}
                 cartCount={cartItems.reduce((total, item) => total + item.quantity, 0)}
+                searchQuery={searchQuery}
+                onSearchChange={handleSearchChange}
             />
             <main className="main-content">
                 <div className="section-header">
@@ -272,23 +320,23 @@ function App() {
                         <h2>Explore</h2>
                         <h2>Items</h2>
                     </div>
-                    <button className="filter-btn">
+                    <button className="filter-btn" onClick={() => setIsFilterOpen(true)}>
                         <span>Filter</span>
                         <span className="material-symbols-outlined">filter_alt</span>
                     </button>
                 </div>
-                
+
                 <div className="product-grid">
-                    {products.map(product => (
-                        <div 
-                            key={product.id} 
+                    {getFilteredProducts().map(product => (
+                        <div
+                            key={product.id}
                             className="product-card"
                             onClick={() => handleCardClick(product)}
                         >
                             <div className="product-image">
                                 {product.thumbnail ? (
-                                    <img 
-                                        src={product.thumbnail} 
+                                    <img
+                                        src={product.thumbnail}
                                         alt={product.name}
                                         className="product-thumbnail"
                                     />
@@ -296,7 +344,7 @@ function App() {
                                     <div className="no-image"></div>
                                 )}
                                 <span className="material-symbols-outlined info-icon">info</span>
-                                <button 
+                                <button
                                     className="add-btn"
                                     onClick={(e) => handleAddClick(e, product)}
                                 >
@@ -310,14 +358,32 @@ function App() {
                         </div>
                     ))}
                 </div>
+
+                {getFilteredProducts().length === 0 && (
+                    <div className="no-results">
+                        <span className="material-symbols-outlined no-results-icon">search_off</span>
+                        <p>No products found</p>
+                        {(searchQuery || filters.tags.length > 0 || filters.priceMin !== null || filters.priceMax !== null) && (
+                            <button
+                                className="clear-filters-btn"
+                                onClick={() => {
+                                    setSearchQuery('');
+                                    setFilters({ priceMin: null, priceMax: null, tags: [] });
+                                }}
+                            >
+                                Clear filters
+                            </button>
+                        )}
+                    </div>
+                )}
             </main>
-            
-            <ProductModal 
-                product={selectedProduct} 
+
+            <ProductModal
+                product={selectedProduct}
                 onClose={handleCloseModal}
             />
 
-            <ShoppingCart 
+            <ShoppingCart
                 isOpen={isCartOpen}
                 onClose={() => setIsCartOpen(false)}
                 cartItems={cartItems}
@@ -326,11 +392,19 @@ function App() {
                 onCheckout={handleCheckout}
             />
 
-            <CheckoutModal 
+            <CheckoutModal
                 isOpen={isCheckoutOpen}
                 onClose={() => setIsCheckoutOpen(false)}
                 cartItems={cartItems}
                 onConfirmPayment={handleConfirmPayment}
+            />
+
+            <FilterModal
+                isOpen={isFilterOpen}
+                onClose={() => setIsFilterOpen(false)}
+                onApplyFilters={handleApplyFilters}
+                allTags={getAllTags()}
+                currentFilters={filters}
             />
         </>
     );

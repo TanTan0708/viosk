@@ -1,4 +1,4 @@
-function Header({ siteTitle, onCartClick, cartCount }) {
+function Header({ siteTitle, onCartClick, cartCount, searchQuery, onSearchChange }) {
     return (
         <header className="header">
             <div className="header-content">
@@ -23,6 +23,8 @@ function Header({ siteTitle, onCartClick, cartCount }) {
                         className="search-input" 
                         placeholder="Searching for something?" 
                         type="text"
+                        value={searchQuery}
+                        onChange={(e) => onSearchChange(e.target.value)}
                     />
                 </div>
             </div>
